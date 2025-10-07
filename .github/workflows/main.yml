@@ -1,0 +1,47 @@
+name: Build and Push Docker Image to ACR
+
+on:
+  push:
+    branches:
+      - main  # Triggers pipeline when you push to 'main' branch
+
+jobs:
+  build-and-push:
+    runs-on: ubuntu-latest
+    
+    env:
+      ACR_NAME: bruacr             
+      ACR_LOGIN_SERVER: bruacr.azurecr.io
+      IMAGE_NAME: brihatthi
+      IMAGE_TAG: v1
+    
+    steps:
+      # Step 1: Checkout repository
+      - name: Checkout source code
+        uses: actions/checkout@v4
+
+      # Step 2: Log in to Azure using a service principal
+      - name: Azure Login
+        uses: Azure/login@v2.3.0
+        with:
+          client-id: 00cab201-d82c-4e0d-a9d9-eafd2fd55d63
+          # TenantId of the Azure Service principal created.
+          tenant-id: 057505ce-dbe9-4e9e-87dd-2a430677c9b6
+          # Azure subscriptionId
+          subscription-id: f5c536a3-4099-4388-951d-002f72842059
+          
+
+      # Step 3: Log in to Azure Container Registry (ACR)
+      - name: Azure Container Registry Login
+        run: |
+          az acr login --name $ACR_NAME
+
+      # Step 4: Build and push Docker image to ACR
+      - name: Build Docker image
+        run: |
+          docker build -t $IMAGE_NAME:$IMAGE_TAG .
+      - name: Tag Docker image for ACR
+        run: |
+          docker image tag $IMAGE_NAME:$IMAGE_TAG $ACR_LOGIN_SERVER/$IMAGE_NAME:$IMAGE_TAG
+
+     
