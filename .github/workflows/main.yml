@@ -26,11 +26,7 @@ jobs:
       - name: Azure Login
         uses: Azure/login@v2.3.0
         with:
-          client-id: 00cab201-d82c-4e0d-a9d9-eafd2fd55d63
-          # TenantId of the Azure Service principal created.
-          tenant-id: 057505ce-dbe9-4e9e-87dd-2a430677c9b6
-          # Azure subscriptionId
-          subscription-id: f5c536a3-4099-4388-951d-002f72842059
+         creds: ${{ secrets.AZURE_LOGIN_ID }}
           
 
       # Step 3: Log in to Azure Container Registry (ACR)
