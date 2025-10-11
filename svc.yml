@@ -5,7 +5,7 @@ metadata:
   labels:
     app: myapp
 spec:
-  type: LoadBalancer   # Can change to ClusterIP or LoadBalancer
+  type: ClusterIP   # Can change to ClusterIP or LoadBalancer
   selector:
     app: myapp
   ports:
